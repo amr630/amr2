@@ -206,13 +206,35 @@
     </div>
 </main>
 
-<script>
+<script type="module">
+    // استيراد Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded, onChildRemoved, remove } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
+
+    // تكوين Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyD0KirGzUKdubH2MrkU35QEldBI9NyOLeY",
+        authDomain: "amr2-c1dce.firebaseapp.com",
+        databaseURL: "https://amr2-c1dce-default-rtdb.firebaseio.com", // تأكد من استخدام Realtime Database URL
+        projectId: "amr2-c1dce",
+        storageBucket: "amr2-c1dce.appspot.com",
+        messagingSenderId: "289976158415",
+        appId: "1:289976158415:web:290c7365897f74aa464fba",
+        measurementId: "G-RXV549TL1P"
+    };
+
+    // تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const database = getDatabase(app);
+    const commentsRef = ref(database, "comments"); // مرجع قاعدة البيانات لحفظ التعليقات
+
     document.addEventListener("DOMContentLoaded", loadComments);
 
     function addComment() {
         const usernameInput = document.getElementById("usernameInput");
         const commentInput = document.getElementById("commentInput");
-        const commentsContainer = document.getElementById("commentsContainer");
 
         if (usernameInput.value.trim() === "" || commentInput.value.trim() === "") {
             alert("الرجاء إدخال اسمك والتعليق.");
@@ -221,31 +243,28 @@
 
         // إنشاء كائن التعليق مع حفظ وقت الإضافة
         const comment = {
-            id: Date.now(), // معرف فريد
             username: usernameInput.value,
             text: commentInput.value,
-            timestamp: Date.now() // وقت الإضافة
+            timestamp: Date.now(),
         };
 
-        // حفظ التعليق في Local Storage
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        comments.push(comment);
-        localStorage.setItem("comments", JSON.stringify(comments));
+        // إضافة التعليق إلى Firebase
+        const newCommentRef = push(commentsRef, comment);
 
-        // عرض التعليق على الصفحة
-        displayComment(comment);
+        // ربط التعليق بمعرفه الخاص في Firebase للسماح لصاحبه فقط بحذفه
+        comment.id = newCommentRef.key;
 
         // إعادة تعيين المدخلات
         usernameInput.value = "";
         commentInput.value = "";
     }
 
-    function displayComment(comment) {
+    function displayComment(comment, commentId) {
         const commentsContainer = document.getElementById("commentsContainer");
 
         const commentDiv = document.createElement("div");
         commentDiv.classList.add("comment");
-        commentDiv.setAttribute("data-id", comment.id); // حفظ معرف التعليق
+        commentDiv.setAttribute("data-id", commentId); // حفظ معرف التعليق
 
         const commentText = document.createElement("span");
         commentText.textContent = `${comment.username}: ${comment.text}`;
@@ -253,40 +272,47 @@
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "حذف";
         deleteBtn.classList.add("delete-btn");
-        deleteBtn.addEventListener("click", () => deleteComment(comment.id));
+        deleteBtn.addEventListener("click", () => deleteComment(commentId, comment.username));
 
         commentDiv.appendChild(commentText);
         commentDiv.appendChild(deleteBtn);
         commentsContainer.appendChild(commentDiv);
     }
 
-    function deleteComment(id) {
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        comments = comments.filter(comment => comment.id !== id);
-        localStorage.setItem("comments", JSON.stringify(comments));
+    function deleteComment(commentId, commentOwner) {
+        const usernameInput = document.getElementById("usernameInput").value;
 
-        // حذف التعليق من الصفحة
-        document.querySelector(`[data-id='${id}']`).remove();
+        if (usernameInput !== commentOwner) {
+            alert("لا يمكنك حذف هذا التعليق، لأنه ليس تعليقك!");
+            return;
+        }
+
+        const commentRef = ref(database, `comments/${commentId}`);
+        remove(commentRef);
     }
 
     function loadComments() {
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        const now = Date.now();
+        onChildAdded(commentsRef, (snapshot) => {
+            const comment = snapshot.val();
+            const commentId = snapshot.key;
 
-        // تصفية التعليقات المحفوظة وحذف القديمة (بعد 48 ساعة)
-        comments = comments.filter(comment => {
-            if (now - comment.timestamp < 172800000) { // 48 ساعة = 172800000 ميلي ثانية
-                displayComment(comment);
-                return true;
+            // تحقق من أن التعليق لم يتجاوز 48 ساعة
+            const now = Date.now();
+            if (now - comment.timestamp >= 172800000) { // 48 ساعة = 172800000 ميلي ثانية
+                remove(ref(database, `comments/${commentId}`)); // حذف التعليق القديم تلقائيًا
             } else {
-                return false;
+                displayComment(comment, commentId);
             }
         });
 
-        // تحديث Local Storage بعد حذف التعليقات القديمة
-        localStorage.setItem("comments", JSON.stringify(comments));
+        onChildRemoved(commentsRef, (snapshot) => {
+            const commentId = snapshot.key;
+            const commentDiv = document.querySelector(`[data-id='${commentId}']`);
+            if (commentDiv) commentDiv.remove();
+        });
     }
 </script>
+
 <footer style="font-size: 20px; font-weight: bold;">
     <p>إعداد: مستر أيمن يونس</p>
     <p> تنفيذ الطالب: عمرو حمادة فايز</p>
