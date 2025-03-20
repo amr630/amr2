@@ -207,6 +207,8 @@
 </main>
 
 <script>
+    document.addEventListener("DOMContentLoaded", loadComments);
+
     function addComment() {
         const usernameInput = document.getElementById("usernameInput");
         const commentInput = document.getElementById("commentInput");
@@ -217,24 +219,79 @@
             return;
         }
 
-        const commentDiv = document.createElement("div");
-        commentDiv.classList.add("comment");
-        commentDiv.innerHTML = `<span><strong>${usernameInput.value}:</strong> ${commentInput.value}</span> 
-                                <button class='delete-btn' onclick='deleteComment(this)'>حذف</button>`;
-        
-        commentsContainer.appendChild(commentDiv);
+        // إنشاء كائن التعليق مع حفظ وقت الإضافة
+        const comment = {
+            id: Date.now(), // معرف فريد
+            username: usernameInput.value,
+            text: commentInput.value,
+            timestamp: Date.now() // وقت الإضافة
+        };
+
+        // حفظ التعليق في Local Storage
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+        comments.push(comment);
+        localStorage.setItem("comments", JSON.stringify(comments));
+
+        // عرض التعليق على الصفحة
+        displayComment(comment);
+
+        // إعادة تعيين المدخلات
         usernameInput.value = "";
         commentInput.value = "";
-
-        setTimeout(() => {
-            commentDiv.remove();
-        }, 154800000); // حذف التعليق بعد 43 ساعة
     }
 
-    function deleteComment(button) {
-        button.parentElement.remove();
+    function displayComment(comment) {
+        const commentsContainer = document.getElementById("commentsContainer");
+
+        const commentDiv = document.createElement("div");
+        commentDiv.classList.add("comment");
+        commentDiv.setAttribute("data-id", comment.id); // حفظ معرف التعليق
+
+        const commentText = document.createElement("span");
+        commentText.textContent = `${comment.username}: ${comment.text}`;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "حذف";
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.addEventListener("click", () => deleteComment(comment.id));
+
+        commentDiv.appendChild(commentText);
+        commentDiv.appendChild(deleteBtn);
+        commentsContainer.appendChild(commentDiv);
+    }
+
+    function deleteComment(id) {
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+        comments = comments.filter(comment => comment.id !== id);
+        localStorage.setItem("comments", JSON.stringify(comments));
+
+        // حذف التعليق من الصفحة
+        document.querySelector(`[data-id='${id}']`).remove();
+    }
+
+    function loadComments() {
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+        const now = Date.now();
+
+        // تصفية التعليقات المحفوظة وحذف القديمة (بعد 48 ساعة)
+        comments = comments.filter(comment => {
+            if (now - comment.timestamp < 172800000) { // 48 ساعة = 172800000 ميلي ثانية
+                displayComment(comment);
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        // تحديث Local Storage بعد حذف التعليقات القديمة
+        localStorage.setItem("comments", JSON.stringify(comments));
     }
 </script>
-
+<footer style="font-size: 20px; font-weight: bold;">
+    <p>إعداد: مستر أيمن يونس</p>
+    <p> تنفيذ الطالب: عمرو حمادة فايز</p>
+    <p>للتواصل عبر الإيميل :</p>
+    <p>لزيارة صفحتنا على الفيسبوك : مدرسة مطاي الرسمية للغات</p>
+</footer>
 </body>
 </html>
