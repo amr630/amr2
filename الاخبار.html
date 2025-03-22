@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://th.bing.com/th/id/OIP.D2W2ZM189YWY0NAkDpEtRAHaHa?rs=1&pid=ImgDetMain">
+    <title>مدرسة مطاي الرسمية للغات</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 50px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+        h1 {
+            font-size: 36px;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .btn:hover {
+            background: #005599;
+        }
+        .images-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-pair {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 10px 0;
+        }
+        .image-container {
+            text-align: center;
+        }
+        .image-container img {
+            width: 300px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .image-container img.expanded {
+            transform: scale(2);
+        }
+        .image-caption {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #333;
+        }
+        .comment-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .comment-section input, .comment-section textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .comment-section button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .comment-section button:hover {
+            background: #005599;
+        }
+        .comment {
+            background: #f1f1f1;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <span style="font-size: 24px;" class="header-text">مديرية التربية والتعليم بالمنيا</span>
+        <br>
+        <span style="font-size: 24px;" class="header-text">توجية عام الاعلام التربوى</span>
+    </div>
+<div class="title-container">
+    <h1>زهور اللغات</h1>
+<br><br>
+    <h2>صحيفة دورية الصدور – تصدر كل شهر عن جماعة الصحافة بالمدرسة – العدد الثالث عن شهر مارس 2025</h2>
+</div>
+
+    <div class="header-right">
+        <span style="font-size: 24px;" class="header-text">ادارة مطاى التعليمية</span>
+        <br>
+        <span style="font-size: 24px;" class="header-text">مدرسة مطاى الرسمية للغات</span>
+    </div>
+</header>
+
+<main>
+    <div class="buttons-container">
+        <button class="btn" onclick="location.href='index.html'">الرئيسية</button>
+        <button class="btn" onclick="location.href='الافتتاحية.html'">الافتتاحية</button>
+        <button class="btn" onclick="location.href='الاخبار.html'">الاخبار</button>
+        <button class="btn" onclick="location.href='مقالات.html'">مقالات</button>
+        <button class="btn" onclick="location.href='تحقيقات.html'">تحقيقات</button>
+        <button class="btn" onclick="location.href='حوارات صحفية.html'">حوارات صحفية</button>
+        <button class="btn" onclick="location.href='كاركاتير.html'">كاركاتير</button>
+        <button class="btn" onclick="location.href='تقاير.html'">تقاير</button>
+        <button class="btn" onclick="location.href='صور صحفية.html'">صور صحفية</button>
+        <button class="btn" onclick="location.href='مناهجنا.html'">مناهجنا</button>
+        <button class="btn" onclick="location.href='الاستراحة.html'">الاستراحة</button>
+        <button class="btn" onclick="location.href='الإعلان.html'">الإعلان</button>
+    </div>
+<br>
+        <h1>وحدة التدريب تواجه التنمر </h1>
+        <p style="font-size: 25px; color: black;">فى اطار حرص وزارة التربية والتعليم بقيادة السيد محمد عبد اللطيف وزير التربية والتعليم على القضاء على الظواهر السلبية فى مدارس مصر وعلى رأسها ظاهرة التنمر المدرسى وبناء ايضا على توجيهات السيد اللواء عماد الكدوانى محافظ المنيا قامت بوحدة التدريب بالمدرسة بقيادة الاستاذ مؤمن حماد بعمل تدريب وورشة عمل لطلاب المرحلة الاعدادية على التصدى لظاهرة التنمر وكيفية مواجهته وذلك من اعداد وتدريب الاستاذة امنة السيد معلمة الحاس الالى وقد شارك فى هذه الورشة اسرة التربية الاجتماعية واسرة التربية النفسية وايضا السادة مسؤلو المدرسة وعلى رأسهم الاستاذة صباح ثروت مديرة المدرسة والاستاذ بيشوى سمير وكيل المدرسة وايضا كوكبة من معلمى ومعلمات المدرسة وقد أبدع طلابنا خلال الورشة واظهروا حلولا كثيرة لمواجهة المتنمرين وطالبوا باعادة مثل هذه الدورة ولكن فى موضوع التنمر الالكترونى لما فيه من شيوعه بين الطلاب 
+.</p>
+        <img src="8.jpg" style="width: 500px; height: auto; cursor: pointer;" onclick="toggleSize(this)">
+      <div class="number-buttons">
+        <button class="btn" onclick="location.href='الاخبار5.html'">5</button>
+        <button class="btn" onclick="location.href='الاخبار4.html'">4</button>
+        <button class="btn" onclick="location.href='الاخبار3.html'">3</button>
+        <button class="btn" onclick="location.href='الاخبار2.html'">2</button>
+        <button class="btn" onclick="location.href='الاخبار.html'">1</button>
+    </div>
+ <script>
+        function toggleSize(img) {
+            let currentWidth = parseInt(img.style.width); // تحويل العرض إلى رقم
+            img.style.width = currentWidth === 600 ? "820px" : "820px"; // التبديل بين الحجمين
+
+        }
+
+    </script>
+
+</body>
+</html>
